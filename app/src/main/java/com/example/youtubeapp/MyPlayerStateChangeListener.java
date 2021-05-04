@@ -40,10 +40,14 @@ class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeList
         Log.d("TAG", "started");
         // Called when playback of the video starts.
 
+        delayPlaylistAutoPlay();
+    }
+
+    private void delayPlaylistAutoPlay() {
         duration = youTubePlayer.getDurationMillis();
 
         long cutoffTime =
-                TimeUnit.MILLISECONDS.toSeconds(duration - 5000);
+                TimeUnit.MILLISECONDS.toSeconds(duration - 20000);
 
         final Handler handler = new Handler();
         final int delay = 5000; // 1000 milliseconds == 1 second
@@ -69,7 +73,7 @@ class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeList
                         youTubePlayer.pause();
                     }
 
-                    if (counter[0] == 3) {
+                    if (counter[0] == 6) {
                         counter[0] = 0;
                         youTubePlayer.next();
                     }
@@ -78,8 +82,6 @@ class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeList
                 handler.postDelayed(this, delay);
             }
         }, delay);
-
-
     }
 
     @Override

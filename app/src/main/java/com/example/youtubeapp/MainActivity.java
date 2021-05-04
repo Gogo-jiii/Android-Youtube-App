@@ -43,7 +43,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
         if (!wasRestored) {
             playerStateChangeListener.setYoutubePlayerInstance(youTubePlayer);
 
-            youTubePlayer.cuePlaylist("PLoYBnLBgd5aaw8E9kOdXDQL3J9ZOrmhlB");
+            youTubePlayer.cuePlaylist("PL6jSyM1s1UHu_cvL7t3jHwUAserO1oBY7");
         }
     }
 
@@ -76,6 +76,6 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     }
 
     @Override public void callBack(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
