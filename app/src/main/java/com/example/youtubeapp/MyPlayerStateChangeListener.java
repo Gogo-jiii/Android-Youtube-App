@@ -11,9 +11,11 @@ class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeList
 
     private YouTubePlayer youTubePlayer;
     private int duration;
+    private Handler handler;
 
     void setYoutubePlayerInstance(YouTubePlayer youTubePlayer) {
         this.youTubePlayer = youTubePlayer;
+        handler = new Handler();
     }
 
     @Override
@@ -45,19 +47,30 @@ class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeList
 
     private void delayPlaylistAutoPlay() {
         duration = youTubePlayer.getDurationMillis();
+        Log.d("DEBUG_" + "duarion_", String.valueOf(duration));
 
-        long cutoffTime =
-                TimeUnit.MILLISECONDS.toSeconds(duration - 20000);
+        long cutoffTime = duration - 20000;
+        Log.d("DEBUG_" + "cutoffTime", String.valueOf(cutoffTime));
 
-        final Handler handler = new Handler();
+
         final int delay = 5000; // 1000 milliseconds == 1 second
         final boolean[] isVideoPaused = {false};
         final int[] counter = {0};
 
         handler.postDelayed(new Runnable() {
+            private boolean killMe = false;
+
+            private void killRunnable() {
+                killMe = true;
+            }
+
             public void run() {
-                long currentTime =
-                        TimeUnit.MILLISECONDS.toSeconds(youTubePlayer.getCurrentTimeMillis());
+                if (killMe) {
+                    return;
+                }
+
+                long currentTime = youTubePlayer.getCurrentTimeMillis();
+                Log.d("DEBUG_" + "currentTime", String.valueOf(currentTime));
 
                 if (currentTime > cutoffTime) {
 
@@ -75,6 +88,7 @@ class MyPlayerStateChangeListener implements YouTubePlayer.PlayerStateChangeList
 
                     if (counter[0] == 6) {
                         counter[0] = 0;
+                        killRunnable();
                         youTubePlayer.next();
                     }
                 }
